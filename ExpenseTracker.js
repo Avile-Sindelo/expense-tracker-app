@@ -5,7 +5,7 @@ export default function ExpenseTracker(db){
     //Add expense ends
     async function addExpense(expense, amount, categoryId){
         //Should be able to add expenses
-
+    
         await db.none(`INSERT INTO expense (expense, amount, category_id)
                         VALUES ($1, $2, $3)`, [expense, amount, categoryId]);
     }
@@ -48,12 +48,23 @@ export default function ExpenseTracker(db){
         //Returns the totals for all categories
     }
 
+    async function getCategoryId(category){
+        let catID  = await db.one(`SELECT id FROM category WHERE category_type=$1`, [category]);
+        return catID ? catID : 'That is not a recognized category';
+    }
+
+    async function getAllCategories(){
+        let cats = await db.many(`SELECT category_type FROM category`);
+        return cats;
+    }
 
     return{
         addExpense,
         allExpenses,
         expensesForCatergory,
         deleteExpense,
-        categoryTotals
+        categoryTotals,
+        getCategoryId,
+        getAllCategories
     }
 }
