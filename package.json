@@ -24,6 +24,7 @@
   },
   "contributors": [],
   "scripts": {
+    "start": "node index",
     "dev": "",
     "test": "mocha"
   },
